@@ -20,6 +20,6 @@ I am Chief Data and AI Officer at [DashQ](https://www.dashq.io/about), where I l
 
 ## GitHub activity
 
-The following report is generated from my GitHub contribution history and public-repository language statistics.
+The following report is generated from my GitHub contribution history.
 
-![Five years of GitHub activity and public-repository languages](github-metrics.svg)
+![Five years of GitHub activity](github-metrics.svg)
