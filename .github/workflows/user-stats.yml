@@ -27,6 +27,23 @@ jobs:
       - name: Check out profile repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
+      - name: Mask private repository identifiers
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: |
+          while IFS= read -r repository; do
+            repository_name="${repository#*/}"
+            repository_path="${repository//\//_}"
+            printf '::add-mask::%s\n' "$repository"
+            printf '::add-mask::%s\n' "$repository_name"
+            printf '::add-mask::%s\n' "$repository_path"
+          done < <(
+            gh api --paginate \
+              '/user/repos?visibility=private&affiliation=owner,collaborator,organization_member&per_page=100' \
+              --jq '.[].full_name'
+          )
+
       - name: Generate authenticated lifetime contribution totals
         uses: cicirello/user-statistician@36500351ea14b69e68217d4c89eb0f3f06680b17 # v1.26.3
         with:
@@ -57,7 +74,7 @@ jobs:
           filename: github-metrics.svg
           output_action: none
           template: classic
-          base: header, repositories, metadata
+          base: header, metadata
           config_timezone: America/Toronto
           repositories: 300
           repositories_batch: 100
