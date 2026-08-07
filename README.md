@@ -4,13 +4,13 @@ Data & AI engineering · production systems · cloud architecture
 
 [jawad.dev](https://jawad.dev/) · [LinkedIn](https://www.linkedin.com/in/jawadalaoui/)
 
-## GitHub activity
+## Engineering activity
 
-![All-time GitHub contribution totals and recent private contribution activity](github-activity.svg)
+![Authenticated lifetime engineering activity and five-year commit history](github-activity.svg)
 
-![Programming languages and five-year contribution history](github-metrics.svg)
+![Five years of authored code changes, engineering depth, and language evolution](github-depth.svg)
 
-Automatically refreshed daily from public and private GitHub activity. Private repository names and contents are not published.
+Automatically extracted daily from authored activity across accessible public and private repositories. Private repository names, file paths, and source contents are not published.
 
 ## Google Cloud professional certifications
 
