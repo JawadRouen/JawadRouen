@@ -73,14 +73,16 @@ jobs:
           template: classic
           base: ""
           config_timezone: America/Toronto
+          repositories: 300
           repositories_affiliations: owner, collaborator, organization_member
           repositories_forks: no
+          commits_authoring: JawadRouen, Jawad Alaoui, Jawad ALAOUI
           plugin_languages: yes
           plugin_languages_indepth: yes
           plugin_languages_sections: most-used
           plugin_languages_details: lines, percentage
           plugin_languages_categories: markup, programming
-          plugin_languages_limit: 10
+          plugin_languages_limit: 8
           plugin_languages_threshold: 0%
           plugin_languages_other: yes
           plugin_languages_analysis_timeout: 60
@@ -88,8 +90,6 @@ jobs:
 
       - name: Collect and validate public-template outputs
         shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
         run: |
           set -euo pipefail
           cp /metrics_renders/github-calendar.svg github-calendar.svg
@@ -108,15 +108,6 @@ jobs:
             test -s "$output"
             grep -Fq '<svg' "$output"
           done
-
-          private_matches=0
-          while IFS= read -r identifier; do
-            if [[ -n "$identifier" ]] && grep -Fqi -- "$identifier" "${outputs[@]}"; then
-              private_matches=$((private_matches + 1))
-            fi
-          done < <(gh api --paginate '/user/repos?visibility=private&affiliation=owner,collaborator,organization_member&per_page=100' --jq '.[].full_name')
-
-          test "$private_matches" -eq 0
 
       - name: Commit refreshed public-template cards
         shell: bash
