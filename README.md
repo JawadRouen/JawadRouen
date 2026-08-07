@@ -4,13 +4,13 @@ Data & AI engineering · production systems · cloud architecture
 
 [jawad.dev](https://jawad.dev/) · [LinkedIn](https://www.linkedin.com/in/jawadalaoui/)
 
-## GitHub activity
+## Engineering activity
 
-[![GitHub contribution totals](github-activity.svg)](https://github.com/cicirello/user-statistician)
+![Authenticated lifetime engineering activity and five-year commit history](github-activity.svg)
 
-[![Five-year GitHub contribution calendar](github-calendar.svg)](https://github.com/lowlighter/metrics)
+![Five years of authored code changes, engineering depth, and language evolution](github-depth.svg)
 
-Generated daily from authenticated GitHub data by [User Statistician](https://github.com/cicirello/user-statistician) and [Lowlighter Metrics](https://github.com/lowlighter/metrics). Private activity is included only in aggregate; private repository names and contents are not published.
+Automatically extracted daily from authored activity across accessible public and private repositories. Private repository names, file paths, and source contents are not published.
 
 ## Google Cloud professional certifications
 
