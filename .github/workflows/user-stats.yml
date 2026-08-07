@@ -76,7 +76,7 @@ jobs:
           repositories: 300
           repositories_affiliations: owner, collaborator, organization_member
           repositories_forks: no
-          commits_authoring: JawadRouen, Jawad Alaoui, Jawad ALAOUI
+          commits_authoring: JawadRouen, Jawad Alaoui, Jawad ALAOUI, JawadRouen@users.noreply.github.com, jawad.alaoui@gmail.com
           plugin_languages: yes
           plugin_languages_indepth: yes
           plugin_languages_sections: most-used
