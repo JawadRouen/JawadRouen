@@ -18,11 +18,19 @@ I build production Data & AI systems across application, data-platform, and clou
 ## Engineering activity
 
 <p align="center">
-  <a href="https://github.com/cicirello/user-statistician"><img src="github-activity.svg" width="720" alt="Authenticated lifetime GitHub contribution totals" /></a>
+  <a href="https://github.com/cicirello/user-statistician"><img src="github-activity.svg" width="480" alt="Authenticated lifetime GitHub contribution totals" /></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/lowlighter/metrics"><img src="github-metrics.svg" width="480" alt="Authenticated repository, authored-language, and five-year contribution metrics" /></a>
+  <a href="https://github.com/jstrieb/github-stats"><img src="github-overview.svg" width="480" alt="Authenticated all-time GitHub contributions and code-change statistics" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/jstrieb/github-stats"><img src="github-languages.svg" width="480" alt="Languages by file size across repositories with my GitHub contributions" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/lowlighter/metrics"><img src="github-calendar.svg" width="480" alt="Authenticated five-year GitHub contribution calendar" /></a>
 </p>
 
 <p align="center"><sub>Updated daily by the public <a href=".github/workflows/user-stats.yml">GitHub Actions workflow</a>. Private repository names and source code are not published.</sub></p>

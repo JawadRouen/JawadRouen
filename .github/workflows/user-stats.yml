@@ -51,69 +51,68 @@ jobs:
           include-title: false
           colors: light
           hide-keys: general repositories languages contribTo
-          image-width: 720
+          image-width: 480
           commit-and-push: false
           show-border: true
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
 
-      - name: Authorize private repository analysis
+      - name: Check out the public full-history statistics generator
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          repository: jstrieb/github-stats
+          ref: ef574fae2ce8311f3e1ebb43e07c0c0fae0a41b6
+          path: .generator/github-stats
+          persist-credentials: false
+
+      - name: Set up the generator toolchain
+        uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2
+        with:
+          version: 0.16.0
+
+      - name: Build the public full-history statistics generator
+        working-directory: .generator/github-stats
+        shell: bash
+        run: zig build
+
+      - name: Generate authenticated full-history and language statistics
         shell: bash
         env:
-          METRICS_TOKEN: ${{ secrets.METRICS_TOKEN }}
-        run: |
-          git config --global --add \
-            url."https://x-access-token:${METRICS_TOKEN}@github.com/".insteadOf \
-            "https://${METRICS_TOKEN}@github.com/"
-          git config --global --add \
-            url."https://x-access-token:${METRICS_TOKEN}@github.com/".insteadOf \
-            "https://github.com/"
+          ACCESS_TOKEN: ${{ secrets.METRICS_TOKEN }}
+          OVERVIEW_OUTPUT_FILE: github-overview.svg
+          LANGUAGES_OUTPUT_FILE: github-languages.svg
+          EXCLUDE_PRIVATE: "false"
+          MAX_RETRIES: "5"
+          SILENT: "true"
+        run: ./.generator/github-stats/zig-out/bin/github-stats
 
-      - name: Generate authenticated engineering depth
+      - name: Generate authenticated five-year contribution calendar
         uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           user: JawadRouen
-          filename: github-metrics.svg
+          filename: github-calendar.svg
           output_action: none
           template: classic
           base: metadata
           config_timezone: America/Toronto
           repositories: 0
           repositories_forks: no
-          commits_authoring: ${{ secrets.COMMITS_AUTHORING }}
-          plugin_languages: yes
-          plugin_languages_indepth: yes
-          plugin_languages_indepth_custom: ${{ secrets.LANGUAGE_REPOSITORIES }}
-          plugin_languages_sections: most-used
-          plugin_languages_details: lines, percentage
-          plugin_languages_categories: markup, programming
-          plugin_languages_limit: 8
-          plugin_languages_threshold: 0%
-          plugin_languages_analysis_timeout: 60
-          plugin_languages_analysis_timeout_repositories: 15
           plugin_calendar: yes
           plugin_calendar_limit: 5
           plugins_errors_fatal: yes
-
-      - name: Remove private repository credentials
-        if: always()
-        shell: bash
-        env:
-          METRICS_TOKEN: ${{ secrets.METRICS_TOKEN }}
-        run: |
-          git config --global --unset-all \
-            url."https://x-access-token:${METRICS_TOKEN}@github.com/".insteadOf || true
 
       - name: Collect and validate public-template outputs
         shell: bash
         run: |
           set -euo pipefail
-          cp /metrics_renders/github-metrics.svg github-metrics.svg
+          cp /metrics_renders/github-calendar.svg github-calendar.svg
 
           outputs=(
             github-activity.svg
-            github-metrics.svg
+            github-overview.svg
+            github-languages.svg
+            github-calendar.svg
           )
 
           for output in "${outputs[@]}"; do
@@ -125,22 +124,23 @@ jobs:
             fi
           done
 
-          grep -Fq 'Most used languages' github-metrics.svg
-          grep -Fq 'Contributions calendar' github-metrics.svg
-
-          authored_commits=$(grep -oE 'across [0-9]+ commits' github-metrics.svg | head -1 | grep -oE '[0-9]+')
-          authored_files=$(grep -oE 'in [0-9]+ edited files' github-metrics.svg | head -1 | grep -oE '[0-9]+')
-          echo "Public-template authored depth: ${authored_commits:-0} commits across ${authored_files:-0} files"
-          test "${authored_commits:-0}" -ge 1000
-          test "${authored_files:-0}" -ge 1000
-          grep -Fq 'Python' github-metrics.svg
+          grep -Fq 'All-time contributions' github-overview.svg
+          grep -Fq 'Lines of code changed' github-overview.svg
+          grep -Fq 'Repositories with contributions' github-overview.svg
+          grep -Fq 'Languages Used (By File Size)' github-languages.svg
+          grep -Fq 'Python' github-languages.svg
+          grep -Fq 'Contributions calendar' github-calendar.svg
+          if grep -Fq '{{' github-overview.svg github-languages.svg; then
+            echo 'Unresolved generator template value' >&2
+            exit 1
+          fi
 
       - name: Commit refreshed public-template cards
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- github-activity.svg github-metrics.svg
+          git add -- github-activity.svg github-overview.svg github-languages.svg github-calendar.svg
           if git diff --cached --quiet; then
             exit 0
           fi
