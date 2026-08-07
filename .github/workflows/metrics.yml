@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: github-metrics
+  group: github-profile-metrics
   cancel-in-progress: true
 
 jobs:
@@ -29,8 +29,7 @@ jobs:
           filename: github-metrics.svg
           committer_branch: ${{ github.ref_name }}
           template: classic
-          base: activity
-          base_indepth: yes
+          base: ""
           config_timezone: America/Toronto
           repositories_forks: no
           plugin_calendar: yes
