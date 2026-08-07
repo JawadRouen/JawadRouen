@@ -1,4 +1,4 @@
-name: Engineering activity and depth
+name: Public GitHub profile statistics
 
 on:
   schedule:
@@ -7,64 +7,95 @@ on:
   push:
     branches:
       - main
+      - agent/public-profile-metrics
     paths:
       - .github/workflows/user-stats.yml
-      - scripts/profile_stats.py
-      - tests/test_profile_stats.py
+      - README.md
 
 permissions:
   contents: write
 
 concurrency:
-  group: github-profile-stats
+  group: public-github-profile-statistics
   cancel-in-progress: false
 
 jobs:
-  activity:
+  generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
     steps:
       - name: Check out profile repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
-      - name: Run generator tests
-        run: python3 -m unittest discover -s tests -v
-
-      - name: Generate authenticated engineering activity card
-        run: python3 scripts/profile_stats.py activity --output github-activity.svg
+      - name: Generate authenticated lifetime activity
+        uses: cicirello/user-statistician@36500351ea14b69e68217d4c89eb0f3f06680b17 # v1.26.3
+        with:
+          image-file: github-activity.svg
+          include-title: false
+          colors: dark
+          hide-keys: general repositories languages contribTo
+          commit-and-push: false
+          show-border: false
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
 
-      - name: Extract five full years of authored engineering activity
-        run: python3 scripts/profile_stats.py depth --output github-depth.svg --workers 6
+      - name: Generate private-inclusive profile and language cards
+        uses: vn7n24fzkq/github-profile-summary-cards@09ba4dde3f9b05828cb99553561db3f4ff07703f # release
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        with:
+          USERNAME: JawadRouen
+          UTC_OFFSET: -4
+          THEME: github_dark
+          AUTO_PUSH: false
 
-      - name: Check private identifiers are absent
+      - name: Generate authenticated five-year calendar
+        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          user: JawadRouen
+          filename: github-calendar.svg
+          output_action: none
+          template: classic
+          base: ""
+          config_timezone: America/Toronto
+          repositories_forks: no
+          plugin_calendar: yes
+          plugin_calendar_limit: 5
+
+      - name: Collect and validate public-template outputs
         shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
         run: |
           set -euo pipefail
-          private_matches=0
-          while IFS= read -r identifier; do
-            if [[ -n "$identifier" ]] && grep -Fqi -- "$identifier" github-activity.svg github-depth.svg; then
-              private_matches=$((private_matches + 1))
-            fi
-          done < <(gh api --paginate '/user/repos?visibility=private&affiliation=owner,collaborator,organization_member&per_page=100' --jq '.[].full_name')
+          cp /metrics_renders/github-calendar.svg github-calendar.svg
 
-          test "$private_matches" -eq 0
-          printf 'Verified private_identifier_matches=%s\n' "$private_matches"
+          outputs=(
+            github-activity.svg
+            github-calendar.svg
+            profile-summary-card-output/github_dark/1-repos-per-language.svg
+            profile-summary-card-output/github_dark/2-most-commit-language.svg
+            profile-summary-card-output/github_dark/4-productive-time.svg
+          )
 
-      - name: Commit refreshed activity card
+          for output in "${outputs[@]}"; do
+            test -s "$output"
+            grep -Fq '<svg' "$output"
+          done
+
+      - name: Commit refreshed public-template cards
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- github-activity.svg github-depth.svg
+          git add -- \
+            github-activity.svg \
+            github-calendar.svg \
+            profile-summary-card-output/github_dark/1-repos-per-language.svg \
+            profile-summary-card-output/github_dark/2-most-commit-language.svg \
+            profile-summary-card-output/github_dark/4-productive-time.svg
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Update github-activity.svg - [Skip GitHub Action]"
+          git commit -m "Refresh public profile statistics - [Skip GitHub Action]"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
