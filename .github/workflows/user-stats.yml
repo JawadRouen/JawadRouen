@@ -62,7 +62,10 @@ jobs:
         env:
           METRICS_TOKEN: ${{ secrets.METRICS_TOKEN }}
         run: |
-          git config --global \
+          git config --global --add \
+            url."https://x-access-token:${METRICS_TOKEN}@github.com/".insteadOf \
+            "https://${METRICS_TOKEN}@github.com/"
+          git config --global --add \
             url."https://x-access-token:${METRICS_TOKEN}@github.com/".insteadOf \
             "https://github.com/"
 
@@ -74,15 +77,14 @@ jobs:
           filename: github-metrics.svg
           output_action: none
           template: classic
-          base: header, metadata
+          base: metadata
           config_timezone: America/Toronto
-          repositories: 300
-          repositories_batch: 100
-          repositories_affiliations: owner, collaborator, organization_member
+          repositories: 0
           repositories_forks: no
           commits_authoring: ${{ secrets.COMMITS_AUTHORING }}
           plugin_languages: yes
           plugin_languages_indepth: yes
+          plugin_languages_indepth_custom: ${{ secrets.LANGUAGE_REPOSITORIES }}
           plugin_languages_sections: most-used
           plugin_languages_details: lines, percentage
           plugin_languages_categories: markup, programming
@@ -128,8 +130,10 @@ jobs:
 
           authored_commits=$(grep -oE 'across [0-9]+ commits' github-metrics.svg | head -1 | grep -oE '[0-9]+')
           authored_files=$(grep -oE 'in [0-9]+ edited files' github-metrics.svg | head -1 | grep -oE '[0-9]+')
-          test "${authored_commits:-0}" -ge 100
-          test "${authored_files:-0}" -ge 100
+          echo "Public-template authored depth: ${authored_commits:-0} commits across ${authored_files:-0} files"
+          test "${authored_commits:-0}" -ge 1000
+          test "${authored_files:-0}" -ge 1000
+          grep -Fq 'Python' github-metrics.svg
 
       - name: Commit refreshed public-template cards
         shell: bash

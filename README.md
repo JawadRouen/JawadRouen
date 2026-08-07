@@ -1,6 +1,6 @@
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&color=0:0D1117,100:1F6FEB&height=170&section=header&text=Jawad%20Alaoui&fontSize=44&fontColor=FFFFFF&desc=Data%20%26%20AI%20Engineering%20%E2%80%A2%20Cloud%20Architecture%20%E2%80%A2%20Production%20Systems&descSize=17&descAlignY=72" width="100%" alt="Jawad Alaoui — Data and AI Engineering, Cloud Architecture, Production Systems" />
-</p>
+<h1 align="center">Jawad Alaoui</h1>
+
+<p align="center"><strong>Data &amp; AI Engineering · Cloud Architecture · Production Systems</strong></p>
 
 <p align="center">
   <a href="https://jawad.dev/"><img src="https://img.shields.io/badge/jawad.dev-111827?style=for-the-badge&logo=firefoxbrowser&logoColor=white" alt="jawad.dev" /></a>
