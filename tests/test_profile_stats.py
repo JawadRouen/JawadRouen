@@ -63,7 +63,10 @@ class SvgTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "activity.svg"
             profile_stats.render_activity(data, output)
+            mobile = pathlib.Path(directory) / "activity-mobile.svg"
+            profile_stats.render_activity_mobile(data, mobile)
             ET.parse(output)
+            ET.parse(mobile)
             content = output.read_text(encoding="utf-8")
             for value in ("3,572", "73", "542", "1,370", "2,131"):
                 self.assertIn(value, content)
@@ -114,7 +117,10 @@ class SvgTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "depth.svg"
             profile_stats.render_depth(data, output)
+            mobile = pathlib.Path(directory) / "depth-mobile.svg"
+            profile_stats.render_depth_mobile(data, mobile)
             ET.parse(output)
+            ET.parse(mobile)
             content = output.read_text(encoding="utf-8")
             self.assertIn("Python", content)
             self.assertIn("66.7%", content)

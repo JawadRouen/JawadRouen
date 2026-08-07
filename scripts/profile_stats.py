@@ -727,6 +727,83 @@ def render_activity(data: dict[str, Any], output: pathlib.Path) -> None:
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def render_activity_mobile(data: dict[str, Any], output: pathlib.Path) -> None:
+    width, height = 390, 690
+    totals = data["totals"]
+    lines = svg_header(
+        width,
+        height,
+        "Engineering activity",
+        "Authenticated public and private GitHub totals",
+    )
+    cards = [
+        ("Authored commits", totals["commits"]),
+        ("Issues opened", totals["issues"]),
+        ("Pull requests opened", totals["pull_requests"]),
+        ("Pull requests reviewed", totals["reviews"]),
+    ]
+    for index, (label, value) in enumerate(cards):
+        column = index % 2
+        row = index // 2
+        x = 20 + column * 180
+        y = 98 + row * 96
+        lines.extend(
+            [
+                f'<rect x="{x}" y="{y}" width="170" height="82" rx="9" fill="#161B22" stroke="#30363D"/>',
+                f'<text class="label" x="{x + 12}" y="{y + 25}">{xml(label)}</text>',
+                f'<text class="value" x="{x + 12}" y="{y + 62}" font-size="25">{format_number(value)}</text>',
+            ]
+        )
+
+    lines.extend(
+        [
+            '<rect x="20" y="300" width="350" height="72" rx="9" fill="#111D2E" stroke="#1F6FEB"/>',
+            '<text class="label" x="34" y="327" fill="#58A6FF">PRIVATE CONTRIBUTION ACTIVITY</text>',
+            f'<text class="value" x="34" y="356" font-size="24">{format_number(totals["private_recent"])} <tspan class="sub">past year</tspan></text>',
+            '<text class="label" x="20" y="414">AUTHORED COMMITS BY YEAR</text>',
+            f'<text class="small" x="370" y="414" text-anchor="end">{format_number(data["window_commits"])} total</text>',
+        ]
+    )
+
+    entries = data["by_year"]
+    maximum = max(item["commits"] for item in entries) or 1
+    chart_top, chart_bottom = 460, 620
+    slot = 350 / len(entries)
+    bar_width = min(38, slot * 0.64)
+    lines.append(f'<line x1="20" y1="{chart_bottom}" x2="370" y2="{chart_bottom}" stroke="#30363D"/>')
+    for index, item in enumerate(entries):
+        center = 20 + index * slot + slot / 2
+        bar_height = max(4, item["commits"] / maximum * (chart_bottom - chart_top))
+        y = chart_bottom - bar_height
+        lines.extend(
+            [
+                f'<rect x="{center - bar_width / 2:.1f}" y="{y:.1f}" width="{bar_width:.1f}" height="{bar_height:.1f}" rx="4" fill="#238636"/>',
+                f'<text class="barlabel" x="{center:.1f}" y="{max(chart_top - 6, y - 7):.1f}" text-anchor="middle">{format_number(item["commits"])}</text>',
+                f'<text class="small" x="{center:.1f}" y="642" text-anchor="middle">{item["year"]}</text>',
+            ]
+        )
+    lines.append(f'<text class="small" x="370" y="674" text-anchor="end">Updated {xml(data["updated_at"][:10])} UTC</text>')
+    lines.append("</svg>")
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def compact_languages(data: dict[str, Any]) -> list[dict[str, Any]]:
+    languages = list(data["languages"])
+    if len(languages) <= 7:
+        return languages
+    kept = languages[:6]
+    remaining = languages[6:]
+    other_changes = sum(item["changes"] for item in remaining)
+    kept.append(
+        {
+            "language": "Other",
+            "changes": other_changes,
+            "percentage": other_changes / data["source_line_changes"] * 100,
+        }
+    )
+    return kept
+
+
 def render_depth(data: dict[str, Any], output: pathlib.Path) -> None:
     width, height = 960, 900
     lines = svg_header(
@@ -759,19 +836,7 @@ def render_depth(data: dict[str, Any], output: pathlib.Path) -> None:
         ]
     )
 
-    languages = list(data["languages"])
-    if len(languages) > 7:
-        kept = languages[:6]
-        remaining = languages[6:]
-        other_changes = sum(item["changes"] for item in remaining)
-        kept.append(
-            {
-                "language": "Other",
-                "changes": other_changes,
-                "percentage": other_changes / data["source_line_changes"] * 100,
-            }
-        )
-        languages = kept
+    languages = compact_languages(data)
 
     max_changes = max(item["changes"] for item in languages) or 1
     y = 294
@@ -853,6 +918,107 @@ def render_depth(data: dict[str, Any], output: pathlib.Path) -> None:
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def render_depth_mobile(data: dict[str, Any], output: pathlib.Path) -> None:
+    width, height = 390, 1290
+    lines = svg_header(
+        width,
+        height,
+        "Five-year engineering depth",
+        f"Authored changes, {data['window_start']} to {data['window_end']}",
+    )
+    cards = [
+        ("Authored commits", data["search_authored_commits"]),
+        ("Repositories touched", data["repositories_with_authored_commits"]),
+        ("Active coding days", data["active_coding_days"]),
+        ("Source lines changed", data["source_line_changes"]),
+        ("Code file changes", data["code_file_changes"]),
+    ]
+    for index, (label, value) in enumerate(cards):
+        column = index % 2
+        row = index // 2
+        x = 20 + column * 180
+        y = 98 + row * 91
+        card_width = 350 if index == 4 else 170
+        lines.extend(
+            [
+                f'<rect x="{x if index < 4 else 20}" y="{y}" width="{card_width}" height="78" rx="9" fill="#161B22" stroke="#30363D"/>',
+                f'<text class="label" x="{(x if index < 4 else 20) + 12}" y="{y + 24}">{xml(label)}</text>',
+                f'<text class="value" x="{(x if index < 4 else 20) + 12}" y="{y + 58}" font-size="24">{format_number(value)}</text>',
+            ]
+        )
+    lines.extend(
+        [
+            f'<text class="small" x="20" y="382"><tspan fill="#3FB950">+{format_number(data["source_lines_added"])} added</tspan><tspan dx="16" fill="#F85149">-{format_number(data["source_lines_deleted"])} deleted</tspan></text>',
+            '<text class="label" x="20" y="424">PROGRAMMING LANGUAGES IN AUTHORED CHANGES</text>',
+        ]
+    )
+
+    languages = compact_languages(data)
+    maximum = max(item["changes"] for item in languages) or 1
+    y = 450
+    for item in languages:
+        language = item["language"]
+        color = LANGUAGE_COLORS.get(language, "#8B949E")
+        bar_width = max(4, item["changes"] / maximum * 350)
+        lines.extend(
+            [
+                f'<text class="barlabel" x="20" y="{y + 13}">{xml(language)}</text>',
+                f'<text class="barlabel" x="370" y="{y + 13}" text-anchor="end">{item["percentage"]:.1f}% · {format_number(item["changes"])} lines</text>',
+                f'<rect x="20" y="{y + 24}" width="350" height="15" rx="5" fill="#21262D"/>',
+                f'<rect x="20" y="{y + 24}" width="{bar_width:.1f}" height="15" rx="5" fill="{color}"/>',
+            ]
+        )
+        y += 58
+
+    private_lines = int(data.get("private_source_line_changes", 0))
+    total_lines = int(data["source_line_changes"])
+    private_share = private_lines / total_lines * 100 if total_lines else 0
+    lines.extend(
+        [
+            '<rect x="20" y="870" width="350" height="112" rx="9" fill="#111D2E" stroke="#1F6FEB"/>',
+            '<text class="label" x="34" y="898" fill="#58A6FF">PRIVATE FIVE-YEAR ENGINEERING ACTIVITY</text>',
+            f'<text class="barlabel" x="34" y="926">{format_number(data.get("private_non_merge_commits", 0))} commit diffs · {format_number(data.get("private_repositories_analyzed", 0))} repositories</text>',
+            f'<text class="barlabel" x="34" y="952">{format_number(private_lines)} source-line changes</text>',
+            f'<text class="barlabel" x="356" y="952" text-anchor="end">{private_share:.1f}% private</text>',
+            '<text class="label" x="20" y="1024">LANGUAGE EVOLUTION</text>',
+            '<text class="small" x="370" y="1024" text-anchor="end">each column totals 100%</text>',
+        ]
+    )
+
+    evolution_languages = ["Python", "TypeScript", "SQL", "JavaScript"]
+    yearly = data.get("languages_by_year", [])
+    chart_top, chart_bottom = 1060, 1190
+    slot = 350 / max(1, len(yearly))
+    bar_width = min(38, slot * 0.64)
+    for index, year_data in enumerate(yearly):
+        center = 20 + index * slot + slot / 2
+        percentages = {item["language"]: item["percentage"] for item in year_data.get("languages", [])}
+        segments = [(language, percentages.get(language, 0.0)) for language in evolution_languages]
+        segments.append(("Other", max(0.0, 100.0 - sum(value for _, value in segments))))
+        cursor = chart_bottom
+        for language, percentage in segments:
+            segment_height = percentage / 100 * (chart_bottom - chart_top)
+            if segment_height <= 0:
+                continue
+            cursor -= segment_height
+            lines.append(
+                f'<rect x="{center - bar_width / 2:.1f}" y="{cursor:.1f}" width="{bar_width:.1f}" height="{segment_height:.1f}" fill="{LANGUAGE_COLORS.get(language, "#8B949E")}"/>'
+            )
+        lines.append(f'<rect x="{center - bar_width / 2:.1f}" y="{chart_top}" width="{bar_width:.1f}" height="{chart_bottom - chart_top}" rx="4" fill="none" stroke="#30363D"/>')
+        top_language = year_data.get("languages", [{}])[0].get("language", "-") if year_data.get("languages") else "-"
+        lines.append(f'<text class="small" x="{center:.1f}" y="1212" text-anchor="middle">{year_data["year"]}</text>')
+        lines.append(f'<text class="small" x="{center:.1f}" y="1230" text-anchor="middle">{xml(top_language)}</text>')
+
+    lines.extend(
+        [
+            '<text class="small" x="20" y="1264">Generated, vendored, lock, markup, data and notebook files excluded</text>',
+            f'<text class="small" x="370" y="1282" text-anchor="end">Updated {xml(data["updated_at"][:10])} UTC</text>',
+            "</svg>",
+        ]
+    )
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def parse_date(value: str | None) -> dt.date:
     return dt.date.fromisoformat(value) if value else dt.datetime.now(dt.timezone.utc).date()
 
@@ -880,6 +1046,7 @@ def main() -> int:
     if args.mode == "activity":
         data = collect_activity(client, args.login, today, args.years)
         render_activity(data, args.output)
+        render_activity_mobile(data, args.output.with_name(f"{args.output.stem}-mobile{args.output.suffix}"))
     else:
         data = collect_depth(
             client,
@@ -891,6 +1058,7 @@ def main() -> int:
             args.max_commits,
         )
         render_depth(data, args.output)
+        render_depth_mobile(data, args.output.with_name(f"{args.output.stem}-mobile{args.output.suffix}"))
     write_summary(data)
     return 0
 

@@ -6,9 +6,15 @@ Data & AI engineering · production systems · cloud architecture
 
 ## Engineering activity
 
-![Authenticated lifetime engineering activity and five-year commit history](github-activity.svg)
+<picture>
+  <source media="(max-width: 600px)" srcset="github-activity-mobile.svg">
+  <img alt="Authenticated lifetime engineering activity and five-year commit history" src="github-activity.svg">
+</picture>
 
-![Five years of authored code changes, engineering depth, and language evolution](github-depth.svg)
+<picture>
+  <source media="(max-width: 600px)" srcset="github-depth-mobile.svg">
+  <img alt="Five years of authored code changes, engineering depth, and language evolution" src="github-depth.svg">
+</picture>
 
 Automatically extracted daily from authored activity across accessible public and private repositories. Private repository names, file paths, and source contents are not published.
 
