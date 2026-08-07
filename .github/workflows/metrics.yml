@@ -21,7 +21,7 @@ jobs:
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           user: JawadRouen
-          filename: github-metrics.svg
+          filename: github-calendar.svg
           committer_branch: ${{ github.ref_name }}
           template: classic
           base: ""
