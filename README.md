@@ -23,4 +23,6 @@ GitHub's public index contained **43 pull requests I authored, including 40 merg
 
 ## Five-year contribution record
 
+The calendar includes private contributions as aggregate activity. Private repository names and contents are not published.
+
 ![Five years of GitHub activity](github-metrics.svg)
