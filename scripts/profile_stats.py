@@ -198,7 +198,7 @@ class GitHubClient:
         if payload is not None:
             headers["Content-Type"] = "application/json"
 
-        for attempt in range(5):
+        for attempt in range(8):
             self._throttle()
             request = urllib.request.Request(url, data=payload, headers=headers, method=method)
             try:
@@ -213,11 +213,12 @@ class GitHubClient:
                 remaining = error.headers.get("X-RateLimit-Remaining")
                 reset = error.headers.get("X-RateLimit-Reset")
                 retryable = error.code in {403, 429, 500, 502, 503, 504}
-                if retryable and attempt < 4:
-                    if retry_after:
+                if retryable and attempt < 7:
+                    if remaining == "0" and reset:
+                        delay = max(1, int(reset) - int(time.time()) + 2)
+                        print(f"GitHub core quota exhausted; waiting {delay} seconds for reset", flush=True)
+                    elif retry_after:
                         delay = min(60, max(1, int(retry_after)))
-                    elif remaining == "0" and reset:
-                        delay = min(60, max(1, int(reset) - int(time.time()) + 2))
                     else:
                         delay = min(30, 2 ** attempt)
                     time.sleep(delay)
@@ -225,7 +226,7 @@ class GitHubClient:
                 details = error.read().decode("utf-8", errors="replace")
                 raise GitHubError(f"GitHub API returned HTTP {error.code}: {details[:300]}") from error
             except urllib.error.URLError as error:
-                if attempt < 4:
+                if attempt < 7:
                     time.sleep(min(30, 2 ** attempt))
                     continue
                 raise GitHubError(f"GitHub API request failed: {error}") from error
