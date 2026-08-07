@@ -125,5 +125,6 @@ jobs:
             exit 0
           fi
           git commit -m "Refresh public profile statistics - [Skip GitHub Action]"
+          git restore --worktree -- .
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
