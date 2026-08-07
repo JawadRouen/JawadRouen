@@ -1,25 +1,28 @@
 # Jawad Alaoui
 
-I build data and AI systems, with hands-on work spanning machine learning, data engineering, software architecture, and production delivery.
+I design, implement, and review data and AI systems. This profile is evidence-first: public code and pull requests are linked below; private production work appears only as aggregate contribution activity.
 
-I am Chief Data and AI Officer at [DashQ](https://www.dashq.io/about), where I lead the architecture and delivery of AI-enabled customer services, internal data products, and agentic systems. I founded [NORMA](https://norma.dev), and I teach machine learning and deep learning part time at [Université Gustave Eiffel](https://pagespro.univ-gustave-eiffel.fr/jawad-alaoui-mhammedi).
+[Public authored pull requests](https://github.com/search?q=type%3Apr+author%3AJawadRouen+is%3Apublic&type=pullrequests) · [Public pull-request reviews](https://github.com/search?q=type%3Apr+reviewed-by%3AJawadRouen+is%3Apublic&type=pullrequests) · [jawad.dev](https://jawad.dev/) · [LinkedIn](https://www.linkedin.com/in/jawadalaoui/)
 
-[Website](https://jawad.dev/) · [Technical writing](https://jawad.dev/blog/) · [Talks](https://jawad.dev/speaking/) · [LinkedIn](https://www.linkedin.com/in/jawadalaoui/)
+## Public engineering evidence
 
-## Selected technical work
+GitHub's public index contained **43 pull requests I authored, including 40 merged**, and **40 pull requests I reviewed, including 34 merged**, when I audited it on August 6, 2026.
 
-- **Production AI and agentic systems.** I work on governed AI agents, internal data products, evaluation controls, and the engineering practices required to move them into production. I document the implementation lessons in [The Bottleneck Is No Longer Code](https://jawad.dev/blog/agentic-development-part-1-the-bottleneck-is-no-longer-code/) and [Making the Speed Useful](https://jawad.dev/blog/agentic-development-part-2-making-the-speed-useful/).
-- **AI evaluation.** I use behavioral tests, regression datasets, batch evaluation, and CI/CD checks to evaluate multi-step AI workflows. See [Lessons Learned Building Multi-Agent Systems](https://jawad.dev/blog/multiagents_lessons/) and my talk [Build Trust in Your AI Agents](https://jawad.dev/speaking/build-trust-in-ai-agents/).
-- **Machine-learning teaching material.** I maintain public material on [machine learning](https://github.com/JawadRouen/MachineLearning), [deep learning](https://github.com/JawadRouen/DEEPLEARNING), and [explainable AI](https://github.com/JawadRouen/Explainability).
-- **Public engineering contributions.** My public organization work includes contributions to an [agentic chatbot starter pack](https://github.com/www-norma-dev/IONOS-simple-chatbot) and [LevelApp documentation](https://github.com/www-norma-dev/levelapp-docs).
+| Area | Inspectable evidence |
+| --- | --- |
+| Python, NLP, testing, and packaging | In [`THEOLEX-IO/legal_doc_processing`](https://github.com/THEOLEX-IO/legal_doc_processing), I [authored 28 public pull requests](https://github.com/THEOLEX-IO/legal_doc_processing/pulls?q=is%3Apr+author%3AJawadRouen) and [reviewed 11](https://github.com/THEOLEX-IO/legal_doc_processing/pulls?q=is%3Apr+reviewed-by%3AJawadRouen). The record includes dataset and unit tests, package deployment, vectorization, and extraction fixes. |
+| Agentic AI and model integration | In the Python-based [`IONOS-simple-chatbot`](https://github.com/www-norma-dev/IONOS-simple-chatbot), I [reviewed 11 public pull requests](https://github.com/www-norma-dev/IONOS-simple-chatbot/pulls?q=is%3Apr+reviewed-by%3AJawadRouen) covering [web search](https://github.com/www-norma-dev/IONOS-simple-chatbot/pull/19), [Docker and Kubernetes deployment](https://github.com/www-norma-dev/IONOS-simple-chatbot/pull/22), and [fine-tuned model integration](https://github.com/www-norma-dev/IONOS-simple-chatbot/pull/40). |
+| AI evaluation framework | In the Python-based [`levelapp-framework`](https://github.com/levelapp-org/levelapp-framework), I [reviewed nine public pull requests](https://github.com/levelapp-org/levelapp-framework/pulls?q=is%3Apr+reviewed-by%3AJawadRouen), including its [filesystem repository](https://github.com/levelapp-org/levelapp-framework/pull/7), [simulator result model](https://github.com/levelapp-org/levelapp-framework/pull/8), and [endpoint configuration manager](https://github.com/levelapp-org/levelapp-framework/pull/11). |
+| CI/CD and evaluation automation | I [authored six public pull requests](https://github.com/www-norma-dev/levelapp-docs/pulls?q=is%3Apr+author%3AJawadRouen) and have [17 default-branch commits](https://github.com/www-norma-dev/levelapp-docs/commits/main/?author=JawadRouen) in `levelapp-docs`, including its Next.js GitHub Pages deployment workflow. I also reviewed public changes in the JavaScript [`test-project-action`](https://github.com/www-norma-dev/test-project-action/pulls?q=is%3Apr+reviewed-by%3AJawadRouen) and TypeScript [`eval-action`](https://github.com/www-norma-dev/eval-action/pulls?q=is%3Apr+reviewed-by%3AJawadRouen), which run tests and API evaluations through GitHub Actions. |
+| Machine learning implementation | My public repositories include executable material for [machine learning](https://github.com/JawadRouen/MachineLearning), [deep learning](https://github.com/JawadRouen/DEEPLEARNING), [explainable AI](https://github.com/JawadRouen/Explainability), and [NLP](https://github.com/JawadRouen/NLP). |
 
 ## Google Cloud credentials
 
 - [Professional Cloud Architect](https://jawad.dev/certifications/google-cloud-professional-cloud-architect-jawad-alaoui.pdf) — issued March 15, 2026; valid through March 15, 2028.
 - [Professional Data Engineer](https://jawad.dev/certifications/google-cloud-professional-data-engineer-jawad-alaoui.pdf) — earned August 7, 2024.
 
-## GitHub activity
+## Five-year contribution record
 
-The following report is generated from my GitHub contribution history.
+The calendar includes private contributions as aggregate activity. Private repository names and contents are not published.
 
 ![Five years of GitHub activity](github-metrics.svg)
