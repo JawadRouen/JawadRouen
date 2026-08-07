@@ -1,8 +1,8 @@
-name: Engineering activity totals
+name: Engineering activity and depth
 
 on:
   schedule:
-    - cron: "47 6 * * *"
+    - cron: "27 7 * * *"
   workflow_dispatch:
   push:
     branches:
@@ -22,7 +22,7 @@ concurrency:
 jobs:
   activity:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 90
     steps:
       - name: Check out profile repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -35,6 +35,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
 
+      - name: Extract five full years of authored engineering activity
+        run: python3 scripts/profile_stats.py depth --output github-depth.svg --workers 6
+        env:
+          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
+
       - name: Check private identifiers are absent
         shell: bash
         env:
@@ -43,7 +48,7 @@ jobs:
           set -euo pipefail
           private_matches=0
           while IFS= read -r identifier; do
-            if [[ -n "$identifier" ]] && grep -Fqi -- "$identifier" github-activity.svg; then
+            if [[ -n "$identifier" ]] && grep -Fqi -- "$identifier" github-activity.svg github-depth.svg; then
               private_matches=$((private_matches + 1))
             fi
           done < <(gh api --paginate '/user/repos?visibility=private&affiliation=owner,collaborator,organization_member&per_page=100' --jq '.[].full_name')
@@ -56,7 +61,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- github-activity.svg
+          git add -- github-activity.svg github-depth.svg
           if git diff --cached --quiet; then
             exit 0
           fi
