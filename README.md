@@ -1,24 +1,38 @@
-# Jawad Alaoui
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=rect&color=0:0D1117,100:1F6FEB&height=170&section=header&text=Jawad%20Alaoui&fontSize=44&fontColor=FFFFFF&desc=Data%20%26%20AI%20Engineering%20%E2%80%A2%20Cloud%20Architecture%20%E2%80%A2%20Production%20Systems&descSize=17&descAlignY=72" width="100%" alt="Jawad Alaoui — Data and AI Engineering, Cloud Architecture, Production Systems" />
+</p>
 
-Data & AI engineering · production systems · cloud architecture
+<p align="center">
+  <a href="https://jawad.dev/"><img src="https://img.shields.io/badge/jawad.dev-111827?style=for-the-badge&logo=firefoxbrowser&logoColor=white" alt="jawad.dev" /></a>
+  <a href="https://www.linkedin.com/in/jawadalaoui/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+</p>
 
-[jawad.dev](https://jawad.dev/) · [LinkedIn](https://www.linkedin.com/in/jawadalaoui/)
+I build production Data & AI systems across application, data-platform, and cloud-infrastructure layers. Most of my engineering activity is in private organization repositories; the aggregate statistics below are generated from authenticated GitHub data.
+
+## Engineering stack
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=python,ts,js,gcp,terraform,docker,postgres,githubactions&perline=8" alt="Python, TypeScript, JavaScript, Google Cloud, Terraform, Docker, PostgreSQL, and GitHub Actions" />
+</p>
 
 ## Engineering activity
 
-[![Authenticated lifetime GitHub activity](github-activity.svg)](https://github.com/cicirello/user-statistician)
+<p align="center">
+  <a href="https://github.com/cicirello/user-statistician"><img src="github-activity.svg" width="720" alt="Authenticated lifetime GitHub contribution totals" /></a>
+</p>
 
-[![Authenticated five-year contribution calendar](github-calendar.svg)](https://github.com/lowlighter/metrics)
+<p align="center">
+  <a href="https://github.com/lowlighter/metrics"><img src="github-metrics.svg" width="480" alt="Authenticated repository, authored-language, five-year code-change, and contribution metrics" /></a>
+</p>
 
-## Languages and contribution patterns
-
-[![Repositories per language](profile-summary-card-output/github_dark/1-repos-per-language.svg)](https://github.com/vn7n24fzkq/github-profile-summary-cards) [![Most commit language](profile-summary-card-output/github_dark/2-most-commit-language.svg)](https://github.com/vn7n24fzkq/github-profile-summary-cards)
-
-[![Commit time distribution](profile-summary-card-output/github_dark/4-productive-time.svg)](https://github.com/vn7n24fzkq/github-profile-summary-cards)
-
-Generated daily from authenticated GitHub data by [User Statistician](https://github.com/cicirello/user-statistician), [GitHub Profile Summary Cards](https://github.com/vn7n24fzkq/github-profile-summary-cards), and [Lowlighter Metrics](https://github.com/lowlighter/metrics). The [generation workflow](.github/workflows/user-stats.yml) is public. Private activity is included only in aggregate; private repository names and contents are not published.
+<p align="center"><sub>Updated daily by the public <a href=".github/workflows/user-stats.yml">GitHub Actions workflow</a>. Private repository names and source code are not published.</sub></p>
 
 ## Google Cloud professional certifications
 
-- [Professional Cloud Architect](https://jawad.dev/certifications/google-cloud-professional-cloud-architect-jawad-alaoui.pdf) — issued March 15, 2026; valid through March 15, 2028.
-- [Professional Data Engineer](https://jawad.dev/certifications/google-cloud-professional-data-engineer-jawad-alaoui.pdf) — earned August 7, 2024.
+<p align="center">
+  <a href="https://jawad.dev/certifications/google-cloud-professional-cloud-architect-jawad-alaoui.pdf"><img src="https://img.shields.io/badge/Google_Cloud-Professional_Cloud_Architect-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white" alt="Google Cloud Professional Cloud Architect" /></a>
+  <a href="https://jawad.dev/certifications/google-cloud-professional-data-engineer-jawad-alaoui.pdf"><img src="https://img.shields.io/badge/Google_Cloud-Professional_Data_Engineer-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white" alt="Google Cloud Professional Data Engineer" /></a>
+</p>
+
+- **Professional Cloud Architect** — issued March 15, 2026; valid through March 15, 2028.
+- **Professional Data Engineer** — earned August 7, 2024.
