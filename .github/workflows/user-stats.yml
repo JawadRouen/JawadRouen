@@ -63,7 +63,7 @@ jobs:
           repositories_batch: 100
           repositories_affiliations: owner, collaborator, organization_member
           repositories_forks: no
-          commits_authoring: JawadRouen, Jawad Alaoui, Jawad ALAOUI, JawadRouen@users.noreply.github.com, jawad.alaoui@gmail.com
+          commits_authoring: ${{ secrets.COMMITS_AUTHORING }}
           plugin_languages: yes
           plugin_languages_indepth: yes
           plugin_languages_sections: most-used
@@ -71,7 +71,6 @@ jobs:
           plugin_languages_categories: markup, programming
           plugin_languages_limit: 8
           plugin_languages_threshold: 0%
-          plugin_languages_other: yes
           plugin_languages_analysis_timeout: 60
           plugin_languages_analysis_timeout_repositories: 15
           plugin_calendar: yes
@@ -109,6 +108,11 @@ jobs:
 
           grep -Fq 'Most used languages' github-metrics.svg
           grep -Fq 'Contributions calendar' github-metrics.svg
+
+          authored_commits=$(grep -oE 'across [0-9]+ commits' github-metrics.svg | head -1 | grep -oE '[0-9]+')
+          authored_files=$(grep -oE 'in [0-9]+ edited files' github-metrics.svg | head -1 | grep -oE '[0-9]+')
+          test "${authored_commits:-0}" -ge 100
+          test "${authored_files:-0}" -ge 100
 
       - name: Commit refreshed public-template cards
         shell: bash
