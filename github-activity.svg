@@ -19,7 +19,7 @@ text{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-
 <text class="value" x="280" y="174">73</text>
 <rect x="496" y="102" width="216" height="98" rx="10" fill="#161B22" stroke="#30363D"/>
 <text class="label" x="512" y="132">Pull requests opened</text>
-<text class="value" x="512" y="174">542</text>
+<text class="value" x="512" y="174">544</text>
 <rect x="728" y="102" width="216" height="98" rx="10" fill="#161B22" stroke="#30363D"/>
 <text class="label" x="744" y="132">Pull requests reviewed</text>
 <text class="value" x="744" y="174">1,370</text>
