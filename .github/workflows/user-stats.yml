@@ -57,18 +57,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
 
-      - name: Generate authenticated full-history commit languages
-        uses: vn7n24fzkq/github-profile-summary-cards@09ba4dde3f9b05828cb99553561db3f4ff07703f # release
-        env:
-          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
-        with:
-          USERNAME: JawadRouen
-          BRANCH_NAME: ${{ github.ref_name }}
-          UTC_OFFSET: -4
-          EXCLUDE: jupyter notebook,html,mdx,css
-          AUTO_PUSH: false
-          THEME: github
-
       - name: Generate authenticated five-year contribution calendar
         uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
         with:
@@ -89,12 +77,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp profile-summary-card-output/github/2-most-commit-language.svg github-languages.svg
           cp /metrics_renders/github-calendar.svg github-calendar.svg
 
           outputs=(
             github-activity.svg
-            github-languages.svg
             github-calendar.svg
           )
 
@@ -107,20 +93,14 @@ jobs:
             fi
           done
 
-          grep -Fq 'Top Languages by Commit' github-languages.svg
-          grep -Fq 'Python' github-languages.svg
           grep -Fq 'Contributions calendar' github-calendar.svg
-          if grep -Fq '{{' github-languages.svg; then
-            echo 'Unresolved generator template value' >&2
-            exit 1
-          fi
 
       - name: Commit refreshed public-template cards
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- github-activity.svg github-languages.svg github-calendar.svg
+          git add -- github-activity.svg github-calendar.svg
           if git diff --cached --quiet; then
             exit 0
           fi

@@ -22,12 +22,6 @@ I build production Data & AI systems across application, data-platform, and clou
 </p>
 
 <p align="center">
-  <a href="https://github.com/vn7n24fzkq/github-profile-summary-cards"><img src="github-languages.svg" width="480" alt="Full-history commits grouped by the primary language of public and private contribution repositories" /></a>
-</p>
-
-<p align="center"><sub>Programming-language commits across my full GitHub history; notebook and markup repository categories are omitted.</sub></p>
-
-<p align="center">
   <a href="https://github.com/lowlighter/metrics"><img src="github-calendar.svg" width="480" alt="Authenticated five-year GitHub contribution calendar" /></a>
 </p>
 
