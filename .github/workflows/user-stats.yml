@@ -65,7 +65,7 @@ jobs:
           USERNAME: JawadRouen
           BRANCH_NAME: ${{ github.ref_name }}
           UTC_OFFSET: -4
-          EXCLUDE: ""
+          EXCLUDE: jupyter notebook,html,mdx,css
           AUTO_PUSH: false
           THEME: github
 
