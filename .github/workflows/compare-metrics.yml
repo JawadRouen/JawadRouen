@@ -30,6 +30,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
 
+      - name: Generate GitHub Readme Stats card
+        uses: stats-organization/github-readme-stats-action@d82657a0e215a28ec48bfc9b3987999a279f93be # v1
+        with:
+          card: stats
+          options: >-
+            username=JawadRouen&show_icons=true&show=reviews&include_all_commits=true&hide=stars,contribs&hide_rank=true&theme=github_dark&hide_border=true
+          path: comparison/github-readme-stats.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+
       - name: Generate profile-summary cards
         uses: vn7n24fzkq/github-profile-summary-cards@09ba4dde3f9b05828cb99553561db3f4ff07703f # release
         with:
@@ -46,6 +55,7 @@ jobs:
         with:
           name: profile-metrics-comparison
           path: |
+            comparison/github-readme-stats.svg
             comparison/user-statistician.svg
             profile-summary-card-output/github_dark/*.svg
           if-no-files-found: error
