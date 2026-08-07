@@ -1,6 +1,11 @@
 name: Compare profile metrics generators
 
 on:
+  push:
+    branches:
+      - agent/audit-profile-metrics
+    paths:
+      - .github/workflows/compare-metrics.yml
   workflow_dispatch:
 
 permissions:
@@ -44,4 +49,3 @@ jobs:
             comparison/user-statistician.svg
             profile-summary-card-output/github_dark/*.svg
           if-no-files-found: error
-
