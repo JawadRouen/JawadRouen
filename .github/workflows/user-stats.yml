@@ -22,7 +22,7 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
     steps:
       - name: Check out profile repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -63,42 +63,15 @@ jobs:
           plugin_calendar: yes
           plugin_calendar_limit: 5
 
-      - name: Generate authenticated language depth
-        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
-        with:
-          token: ${{ secrets.METRICS_TOKEN }}
-          user: JawadRouen
-          filename: github-languages.svg
-          output_action: none
-          template: classic
-          base: ""
-          config_timezone: America/Toronto
-          repositories: 300
-          repositories_affiliations: owner, collaborator, organization_member
-          repositories_forks: no
-          commits_authoring: JawadRouen, Jawad Alaoui, Jawad ALAOUI, JawadRouen@users.noreply.github.com, jawad.alaoui@gmail.com
-          plugin_languages: yes
-          plugin_languages_indepth: yes
-          plugin_languages_sections: most-used
-          plugin_languages_details: lines, percentage
-          plugin_languages_categories: markup, programming
-          plugin_languages_limit: 8
-          plugin_languages_threshold: 0%
-          plugin_languages_other: yes
-          plugin_languages_analysis_timeout: 60
-          plugin_languages_analysis_timeout_repositories: 15
-
       - name: Collect and validate public-template outputs
         shell: bash
         run: |
           set -euo pipefail
           cp /metrics_renders/github-calendar.svg github-calendar.svg
-          cp /metrics_renders/github-languages.svg github-languages.svg
 
           outputs=(
             github-activity.svg
             github-calendar.svg
-            github-languages.svg
             profile-summary-card-output/github_dark/1-repos-per-language.svg
             profile-summary-card-output/github_dark/2-most-commit-language.svg
             profile-summary-card-output/github_dark/4-productive-time.svg
@@ -117,7 +90,6 @@ jobs:
           git add -- \
             github-activity.svg \
             github-calendar.svg \
-            github-languages.svg \
             profile-summary-card-output/github_dark/1-repos-per-language.svg \
             profile-summary-card-output/github_dark/2-most-commit-language.svg \
             profile-summary-card-output/github_dark/4-productive-time.svg
