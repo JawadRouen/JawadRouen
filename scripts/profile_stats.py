@@ -158,7 +158,7 @@ class GitHubError(RuntimeError):
 
 
 class GitHubClient:
-    def __init__(self, token: str, min_interval: float = 0.12) -> None:
+    def __init__(self, token: str, min_interval: float = 0.09) -> None:
         if not token:
             raise GitHubError("GITHUB_TOKEN is required")
         self.token = token
