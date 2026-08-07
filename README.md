@@ -6,11 +6,11 @@ Data & AI engineering · production systems · cloud architecture
 
 ## GitHub activity
 
-[![GitHub contribution totals](github-activity.svg)](https://github.com/cicirello/user-statistician) [![Full-history languages by commit](profile-summary-card-output/github_dark/2-most-commit-language.svg)](https://github.com/vn7n24fzkq/github-profile-summary-cards)
+[![GitHub contribution totals](github-activity.svg)](https://github.com/cicirello/user-statistician)
 
-[![Five-year GitHub contribution calendar](github-metrics.svg)](https://github.com/lowlighter/metrics)
+[![Authored languages and five-year GitHub contribution calendar](github-metrics.svg)](https://github.com/lowlighter/metrics)
 
-Generated daily from authenticated GitHub data by [User Statistician](https://github.com/cicirello/user-statistician), [GitHub Profile Summary Cards](https://github.com/vn7n24fzkq/github-profile-summary-cards), and [Lowlighter Metrics](https://github.com/lowlighter/metrics). Private activity is included only in aggregate; private repository names and contents are not published.
+Generated daily from authenticated GitHub data by [User Statistician](https://github.com/cicirello/user-statistician) and [Lowlighter Metrics](https://github.com/lowlighter/metrics). Private activity is included only in aggregate; private repository names and contents are not published.
 
 ## Google Cloud professional certifications
 
