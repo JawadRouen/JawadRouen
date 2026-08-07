@@ -22,11 +22,7 @@ I build production Data & AI systems across application, data-platform, and clou
 </p>
 
 <p align="center">
-  <a href="https://github.com/jstrieb/github-stats"><img src="github-overview.svg" width="480" alt="Authenticated all-time GitHub contributions and code-change statistics" /></a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/jstrieb/github-stats"><img src="github-languages.svg" width="480" alt="Languages by file size across repositories with my GitHub contributions" /></a>
+  <a href="https://github.com/vn7n24fzkq/github-profile-summary-cards"><img src="github-languages.svg" width="480" alt="Full-history commits grouped by the primary language of public and private contribution repositories" /></a>
 </p>
 
 <p align="center">
