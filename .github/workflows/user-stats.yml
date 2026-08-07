@@ -40,6 +40,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
 
+      - name: Authorize private repository analysis
+        shell: bash
+        env:
+          METRICS_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: |
+          git config --global \
+            url."https://x-access-token:${METRICS_TOKEN}@github.com/".insteadOf \
+            "https://github.com/"
+
       - name: Generate authenticated engineering depth
         uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
         with:
@@ -51,7 +60,7 @@ jobs:
           base: header, repositories, metadata
           config_timezone: America/Toronto
           repositories: 300
-          repositories_batch: 25
+          repositories_batch: 100
           repositories_affiliations: owner, collaborator, organization_member
           repositories_forks: no
           commits_authoring: JawadRouen, Jawad Alaoui, Jawad ALAOUI, JawadRouen@users.noreply.github.com, jawad.alaoui@gmail.com
@@ -65,12 +74,18 @@ jobs:
           plugin_languages_other: yes
           plugin_languages_analysis_timeout: 60
           plugin_languages_analysis_timeout_repositories: 15
-          plugin_lines: yes
-          plugin_lines_sections: history
-          plugin_lines_history_limit: 5
-          plugin_isocalendar: yes
-          plugin_isocalendar_duration: half-year
+          plugin_calendar: yes
+          plugin_calendar_limit: 5
           plugins_errors_fatal: yes
+
+      - name: Remove private repository credentials
+        if: always()
+        shell: bash
+        env:
+          METRICS_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: |
+          git config --global --unset-all \
+            url."https://x-access-token:${METRICS_TOKEN}@github.com/".insteadOf || true
 
       - name: Collect and validate public-template outputs
         shell: bash
@@ -93,7 +108,6 @@ jobs:
           done
 
           grep -Fq 'Most used languages' github-metrics.svg
-          grep -Fq 'Lines of code changed' github-metrics.svg
           grep -Fq 'Contributions calendar' github-metrics.svg
 
       - name: Commit refreshed public-template cards

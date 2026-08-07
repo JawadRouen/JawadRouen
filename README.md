@@ -22,7 +22,7 @@ I build production Data & AI systems across application, data-platform, and clou
 </p>
 
 <p align="center">
-  <a href="https://github.com/lowlighter/metrics"><img src="github-metrics.svg" width="480" alt="Authenticated repository, authored-language, five-year code-change, and contribution metrics" /></a>
+  <a href="https://github.com/lowlighter/metrics"><img src="github-metrics.svg" width="480" alt="Authenticated repository, authored-language, and five-year contribution metrics" /></a>
 </p>
 
 <p align="center"><sub>Updated daily by the public <a href=".github/workflows/user-stats.yml">GitHub Actions workflow</a>. Private repository names and source code are not published.</sub></p>
