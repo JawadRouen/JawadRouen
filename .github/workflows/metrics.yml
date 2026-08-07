@@ -27,9 +27,16 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}
           user: JawadRouen
           filename: github-metrics.svg
-          committer_branch: main
+          committer_branch: ${{ github.ref_name }}
           template: classic
-          base: ""
+          base: activity
+          base_indepth: yes
           config_timezone: America/Toronto
+          repositories_forks: no
           plugin_calendar: yes
           plugin_calendar_limit: 5
+          plugin_languages: yes
+          plugin_languages_ignored: Jupyter Notebook, HTML, CSS
+          plugin_languages_limit: 8
+          plugin_languages_sections: most-used
+          plugin_languages_details: percentage
