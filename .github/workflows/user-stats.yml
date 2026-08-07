@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - main
-      - agent/public-profile-metrics
+      - agent/profile-redesign-v2
     paths:
       - .github/workflows/user-stats.yml
       - README.md
@@ -16,40 +16,48 @@ permissions:
   contents: write
 
 concurrency:
-  group: public-github-profile-statistics
+  group: public-github-profile-statistics-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - name: Check out profile repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
-      - name: Generate authenticated lifetime activity
+      - name: Mask private repository identifiers
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: |
+          while IFS= read -r repository; do
+            repository_name="${repository#*/}"
+            repository_path="${repository//\//_}"
+            printf '::add-mask::%s\n' "$repository"
+            printf '::add-mask::%s\n' "$repository_name"
+            printf '::add-mask::%s\n' "$repository_path"
+          done < <(
+            gh api --paginate \
+              '/user/repos?visibility=private&affiliation=owner,collaborator,organization_member&per_page=100' \
+              --jq '.[].full_name'
+          )
+
+      - name: Generate authenticated lifetime contribution totals
         uses: cicirello/user-statistician@36500351ea14b69e68217d4c89eb0f3f06680b17 # v1.26.3
         with:
           image-file: github-activity.svg
           include-title: false
-          colors: dark
+          colors: light
           hide-keys: general repositories languages contribTo
+          image-width: 480
           commit-and-push: false
-          show-border: false
+          show-border: true
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
 
-      - name: Generate private-inclusive profile and language cards
-        uses: vn7n24fzkq/github-profile-summary-cards@09ba4dde3f9b05828cb99553561db3f4ff07703f # release
-        env:
-          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
-        with:
-          USERNAME: JawadRouen
-          UTC_OFFSET: -4
-          THEME: github_dark
-          AUTO_PUSH: false
-
-      - name: Generate authenticated five-year calendar
+      - name: Generate authenticated five-year contribution calendar
         uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
         with:
           token: ${{ secrets.METRICS_TOKEN }}
@@ -57,11 +65,13 @@ jobs:
           filename: github-calendar.svg
           output_action: none
           template: classic
-          base: ""
+          base: metadata
           config_timezone: America/Toronto
+          repositories: 0
           repositories_forks: no
           plugin_calendar: yes
           plugin_calendar_limit: 5
+          plugins_errors_fatal: yes
 
       - name: Collect and validate public-template outputs
         shell: bash
@@ -72,30 +82,29 @@ jobs:
           outputs=(
             github-activity.svg
             github-calendar.svg
-            profile-summary-card-output/github_dark/1-repos-per-language.svg
-            profile-summary-card-output/github_dark/2-most-commit-language.svg
-            profile-summary-card-output/github_dark/4-productive-time.svg
           )
 
           for output in "${outputs[@]}"; do
             test -s "$output"
             grep -Fq '<svg' "$output"
+            if grep -Eiq 'unexpected error|something went wrong|error while' "$output"; then
+              echo "Invalid generated metric: $output" >&2
+              exit 1
+            fi
           done
+
+          grep -Fq 'Contributions calendar' github-calendar.svg
 
       - name: Commit refreshed public-template cards
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- \
-            github-activity.svg \
-            github-calendar.svg \
-            profile-summary-card-output/github_dark/1-repos-per-language.svg \
-            profile-summary-card-output/github_dark/2-most-commit-language.svg \
-            profile-summary-card-output/github_dark/4-productive-time.svg
+          git add -- github-activity.svg github-calendar.svg
           if git diff --cached --quiet; then
             exit 0
           fi
           git commit -m "Refresh public profile statistics - [Skip GitHub Action]"
+          git restore --worktree -- .
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
